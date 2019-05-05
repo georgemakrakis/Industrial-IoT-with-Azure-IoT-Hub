@@ -14,14 +14,14 @@
 //
 // Using the Azure CLI:
 // az iot hub show-connection-string --hub-name {YourIoTHubName} --output table
-var connectionString = 'HostName=TestIoTHubTutorial.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=TFvTXU/5cYB1o5txjQkNXznN1zKciZAoNj/TeaceciQ=';
+var connectionString = 'HostName=AzureIoTHubTest.azure-devices.net;SharedAccessKeyName=iothubowner;SharedAccessKey=p2ly1i24kwiw4zDQ4Wr94LadVSvWX2pLHsxcixQXvS0=';
 
 // Using the Node.js Service SDK for IoT Hub:
 //   https://github.com/Azure/azure-iot-sdk-node
 // The sample connects to service-side endpoint to call direct methods on devices.
 var Client = require('azure-iothub').Client;
 
-var deviceId = 'MyPythonDevice';
+var deviceId = 'MyNodeDevice';
 
 // Connect to the service-side endpoint on your IoT hub.
 var client = Client.fromConnectionString(connectionString);

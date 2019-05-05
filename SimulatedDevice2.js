@@ -16,7 +16,7 @@ const chalk = require('chalk');
 //
 // Using the Azure CLI:
 // az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table
-var connectionString = 'HostName=TestIoTHubTutorial.azure-devices.net;DeviceId=MyPythonDevice;SharedAccessKey=tTmIdsyM7Z+qIomcGPZn5KW2OvT9wmbprULS1ksp4sk=';
+var connectionString = 'HostName=AzureIoTHubTest.azure-devices.net;DeviceId=MyNodeDevice;SharedAccessKey=W6V8mmg9EJL5ia+ABdmR1RYIUUatnlawI6adltPnYn4=';
 
 // Using the Node.js Device SDK for IoT Hub:
 //   https://github.com/Azure/azure-iot-sdk-node
@@ -24,6 +24,9 @@ var connectionString = 'HostName=TestIoTHubTutorial.azure-devices.net;DeviceId=M
 var Mqtt = require('azure-iot-device-mqtt').Mqtt;
 var DeviceClient = require('azure-iot-device').Client
 var Message = require('azure-iot-device').Message;
+
+// Import modbus functions 
+var readModbus = require('./ReadModbus');
 
 var client = DeviceClient.fromConnectionString(connectionString, Mqtt);
 
@@ -62,22 +65,26 @@ function onSetTelemetryInterval(request, response) {
 }
 
 // Send a telemetry message to your hub
-function sendMessage(){
-  // Simulate telemetry.
-  var temperature = 20 + (Math.random() * 15);
+async function sendMessage(){
+  // Telemetry message.
+  var volts = await readModbus.readVolts();
+  var ampere = await readModbus.readAmpere();
+  var kWh =  await readModbus.readkWh();
+
   var message = new Message(JSON.stringify({
-    temperature: temperature,
-    humidity: 60 + (Math.random() * 20)
+    volts: volts,
+    ampere: ampere,
+    kWh: kWh
   }));
 
   // Add a custom application property to the message.
   // An IoT hub can filter on these properties without access to the message body.
-  message.properties.add('temperatureAlert', (temperature > 30) ? 'true' : 'false');
+  message.properties.add('voltsAlert', (volts > 260) ? 'true' : 'false');
 
   console.log('Sending message: ' + message.getData());
 
   // Send the message.
-  client.sendEvent(message, function (err) {
+  await client.sendEvent(message, function (err) {
     if (err) {
       console.error('send error: ' + err.toString());
     } else {
