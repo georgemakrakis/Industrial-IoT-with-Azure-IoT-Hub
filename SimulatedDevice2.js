@@ -67,6 +67,7 @@ function onSetTelemetryInterval(request, response) {
 // Send a telemetry message to your hub
 async function sendMessage(){
   // Telemetry message.
+  // For BFM 136
   var volts = await readModbus.readVolts();
   var ampere = await readModbus.readAmpere();
   var kWh =  await readModbus.readkWh();

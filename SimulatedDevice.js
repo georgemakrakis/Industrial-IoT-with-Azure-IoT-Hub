@@ -14,7 +14,7 @@
 //
 // Using the Azure CLI:
 // az iot hub device-identity show-connection-string --hub-name {YourIoTHubName} --device-id MyNodeDevice --output table
-var connectionString = 'HostName=AzureIoTHubTest.azure-devices.net;DeviceId=MyNodeDevice;SharedAccessKey=W6V8mmg9EJL5ia+ABdmR1RYIUUatnlawI6adltPnYn4=';
+var connectionString = 'HostName=gabiot.azure-devices.net;DeviceId=MyNodeDevice;SharedAccessKey=fhLq7M+oX/L9xAp3DEiEfOwDd4qJTVqOl0oUcH4/fkM=';
 
 // Using the Node.js Device SDK for IoT Hub:
 //   https://github.com/Azure/azure-iot-sdk-node
@@ -31,6 +31,7 @@ var client = DeviceClient.fromConnectionString(connectionString, Mqtt);
 // Create a message and send it to the IoT hub every second
 setInterval( async function(){
   // Telemetry message.
+  // For BFM 136
   var volts = await readModbus.readVolts();
   var ampere = await readModbus.readAmpere();
   var kWh =  await readModbus.readkWh();
